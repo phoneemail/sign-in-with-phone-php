@@ -8,7 +8,7 @@ use Firebase\JWT\Key;
 
 if(isset($_COOKIE['ph_email_jwt'])){
     try {
-        $api_key = 'XXXXXXXXXXXXXXXXXXXXXXXXX'; // Please specify API key provided in profile section of Phone Email Admin Dashboard (https://admin.phone.email)
+        $api_key = 'XXXXXXXXXXXXXXXXXXXXX'; // Please specify API key provided by Phone Email mobile application 
         $decoded = JWT::decode($_COOKIE['ph_email_jwt'], new Key($api_key, 'HS256'));
         $jwt_phone = $decoded->country_code.$decoded->phone_no; // You will get user phone number here from JWT
 
@@ -97,12 +97,14 @@ if(isset($_COOKIE['ph_email_jwt'])){
   </div>
 
 
-  <div id="pheIncludedContent"></div>
-  <script src="https://auth.phone.email/automated_login_v1_1.js"></script>
-  <script>
-  var reqJson='{"redirect_url":"https://www.phone.email/login-success","country_code":"+91","phone_no":"9244284001","lead_type":2,"button_text":"Sign in for Free Coupon","email_notification":"icon","button_position":"left"}';
-  log_in_with_phone(reqJson);
-  </script>
+   <!-- Email alert start: Include this email alert code block in footer to show email alert on all pages  -->
+   <div id="pheIncludedContent"></div>
+    <script src="https://auth.phone.email/login_custom_v1_1.js"></script>
+    <script>
+        var reqJson = '{"email_notification":"icon","button_position":"left"}';
+        log_in_with_phone(reqJson);
+    </script>
+    <!-- End of email alert block  -->
 
 </body>
 
