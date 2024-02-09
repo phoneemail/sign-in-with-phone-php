@@ -56,8 +56,8 @@
 
             <!-- Button code start -->
             <script>
-            var country_code = '+91';
-            var phone_no = '9244284001';
+            var country_code = 'XXX';
+            var phone_no = 'XXXXXXXXXX';
 
             var redirect_url = new URL(location.href);
             var auth_url = 'https://www.phone.email/auth/sign-in?countrycode=' + country_code + '&phone_no=' + phone_no + '&auth_type=2&redirect_url=' + redirect_url + '';
