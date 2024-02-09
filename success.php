@@ -8,7 +8,7 @@ use Firebase\JWT\Key;
 
 if(isset($_COOKIE['ph_email_jwt'])){
     try {
-        $api_key = 'DNoVcXQn6mQP3kZxoeGugFX0m5cSkHLn'; // Please specify API key provided by Phone Email mobile application 
+        $api_key = 'XXXXXXXXXXXXXXXXXXXXXXXXX'; // Please specify API key provided in profile section of Phone Email Admin Dashboard (https://admin.phone.email)
         $decoded = JWT::decode($_COOKIE['ph_email_jwt'], new Key($api_key, 'HS256'));
         $jwt_phone = $decoded->country_code.$decoded->phone_no; // You will get user phone number here from JWT
 
