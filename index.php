@@ -13,109 +13,154 @@
     <title>New sign in</title>
 
     <style>
-        .phem-container {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .phem-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 50px 0;
+    }
 
-        .phem-input {
-            padding: 12px 20px;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-        }
+    .phem-input {
+        padding: 12px 20px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
 
-        .phem-card {
-            color: #024430 !important;
-            text-align: center;
-            background-color: #fff;
-            padding: 60px 30px;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 3px rgba(17, 24, 39, .09);
-            width: 100%;
-            max-width: 420px;
-            margin: 0 auto;
-            font-family: sans-serif, serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            line-height: 28px;
-            display: flex;
-            flex-direction: column;
-        }
+    .phem-card {
+        color: #024430 !important;
+        text-align: center;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(17, 24, 39, .09);
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+        font-family: sans-serif, serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        line-height: 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
     </style>
 </head>
 
+
 <body style="background-color: #f1f5f9;">
 
+    <?php 
+        /* Please replace XXXXXXXXXX with client id shown under profile section in admin dashboard (https://admin.phone.email) */
+        $CLIENT_ID = 'XXXXXXXXXXXXXXXXX';
+        $REDIRECT_URL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $AUTH_URL = 'https://auth.phone.email/log-in?client_id='.$CLIENT_ID.'&redirect_url='.$REDIRECT_URL.'';
+    ?>
+
+
+    <?php
+        if(!isset($_GET['access_token'])){
+    ?>
+
+    <!-- Display Login Button -->
     <div class="phem-container">
         <div class="phem-card">
-            <input class="phem-input" type="text" placeholder="First Name" id="fname" onchange="add_fname()">
-            <input class="phem-input" type="text" placeholder="Last Name" id="lname" onchange="add_lname()">
 
-            <!-- Button code start -->
-            <script>
-            var country_code = 'XXX';
-            var phone_no = 'XXXXXXXXXX';
-
-            var redirect_url = new URL(location.href);
-            var auth_url = 'https://www.phone.email/auth/sign-in?countrycode=' + country_code + '&phone_no=' + phone_no + '&auth_type=2&redirect_url=' + redirect_url + '';
-            </script>
+            <img class="phe-login-img" width="250px" src="assets/imgs/page/login/phe-signin-box.svg"
+                alt="phone email login demo">
+            <h1 style="margin:10px; 0">Sign In</h1>
+            <p style="color:#a6a6a6;">Welcome to Sign In with Phone  </p>
 
             <button
-                style="display: flex; align-items: center; justify-content:center; padding: 10px 15px; background-color: #02BD7E; font-weight: bold; color: #ffffff; border: none; border-radius: 3px; font-size: inherit;cursor:pointer;"
+                style="display: flex; align-items: center; justify-content:center; padding: 14px 20px; background-color: #02BD7E; font-weight: bold; color: #ffffff; border: none; border-radius: 3px; font-size: inherit;cursor:pointer; max-width:320px; width:100%"
                 id="btn_ph_login" name="btn_ph_login" type="button"
-                onclick="window.open(''+auth_url+'', 'peLoginWindow', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0, width=500, height=560, top=' + (screen.height - 600) / 2 + ', left=' + (screen.width - 500) / 2);">
+                onclick="window.open('<?php echo $AUTH_URL; ?>', 'peLoginWindow', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0, width=500, height=560, top=' + (screen.height - 600) / 2 + ', left=' + (screen.width - 500) / 2);">
                 <img src="https://storage.googleapis.com/prod-phoneemail-prof-images/phem-widgets/phem-phone.svg"
-                    alt="phone email" style="margin-right:5px;">
-                Sign in with Phone
+                    alt="phone email" style="margin-right:10px;">
+                Sign In with Phone
             </button>
-            <!-- Button code end -->
-            
+
         </div>
     </div>
 
+    <?php } ?>
 
 
-    <!-- Email alert start: Include this email alert code block in footer to show email alert on all pages  -->
-    <div id="pheIncludedContent"></div>
-    <script src="https://auth.phone.email/login_custom_v1_1.js"></script>
-    <script>
-        var reqJson = '{"email_notification":"icon","button_position":"left"}';
-        log_in_with_phone(reqJson);
-    </script>
-    <!-- End of email alert block  -->
+    <?php 
+    
+    /* After successful phone number verification an access_token will be returned by auth verification popup. In this if condition  please use this access_token to call Phone Email API to get verified phone number.  */
+    if(isset($_GET['access_token'])){
 
-    <script>
-        const cookieCheck = (document.cookie.match(/ph_email_jwt\s*=\s*([^;]+)/) || [, null])[1];
-        if (cookieCheck !== null) {
-            // for php uncomment line below
-            location.href = 'success.php';
+        /* To get verified phone number please call the getuser API */
 
-            //for node js uncomment line below
-            // call REST API (NodeJS/php/python/java)
+        // Initialize cURL session
+        $ch = curl_init();
+        $url = "https://eapi.phone.email/getuser";
+        $postData = array(
+            'access_token' => $_GET['access_token'],
+            'client_id' => $CLIENT_ID
+        );
 
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_URL, $url); // URL to submit the POST request
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string instead of outputting it directly
+        curl_setopt($ch, CURLOPT_POST, true); // Set the request type to POST
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); // Set the POST data
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Ignore SSL certificate verification (not recommended in production)
+
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            echo "cURL error: " . curl_error($ch);
+            header('Location: /demo-login');
+        } 
+
+        curl_close($ch);
+
+        $json_data = json_decode($response,true);
+
+        if($json_data['status'] != 200) {
+            header('Location: /demo-login');
         }
-    </script>
+            
+        $country_code = $json_data['country_code'];
+        $phone_no = $json_data['phone_no'];
+        $ph_email_jwt = $json_data['ph_email_jwt'];
+        setcookie('ph_email_jwt', $ph_email_jwt, time() + (86400 * 30), "/"); // 86400 = 1 day
 
+        // Register User: As the user phone number has been verified successfully. If user corrosponding to this verified  mobile number does not exist in your user table then register the user by creating a row in user table. If user already exists then simply continue to the next step.
 
-    <script>
-        function add_fname() {
-            fieldval = document.getElementById('fname').value;
+        // Send Email: We reccomend you to send welcome email to the user.
+        //curl --location --request POST "https://api.phone.email/v1/sendmail" --ssl-no-revoke --header "Content-Type: application/json" --data-raw "{'apiKey':'API_KEY','fromCountryCode':'XXX','fromPhoneNo':'XXXXXXXXXX', 'toCountrycode':'XX','toPhoneNo':'XXXXXXXXXX','subject': 'Welcome to YOUR_BUSINESS_NAME','tinyFlag':true,'messageBody':'V2VsY29tZSB0byB5b3VyIEJVU0lORVNTX05BTUU='}"
 
-            const expirationDate = new Date();
-            expirationDate.setDate(expirationDate.getDate() + 360);
-            document.cookie = `login_form_fname=` + fieldval + `; expires=${expirationDate.toUTCString()}; path=/`;
-        }
+        // Create Session: Store verified user phone number in session variable.
 
-        function add_lname() {
-            fieldval = document.getElementById('lname').value;
-            const expirationDate = new Date();
-            expirationDate.setDate(expirationDate.getDate() + 360);
-            document.cookie = `login_form_lname=` + fieldval + `; expires=${expirationDate.toUTCString()}; path=/`;
-        }
-    </script>
+        // Redirect: Redirect user to the page of your choice as the user has successfully logged in.
+
+        // Handle Logout (Optional): You can create logout button on your website as required.In the event of logout you must clear delete ph_email_jwt cookie and clear your session variables.  To delete cookie simply set it to blank -> setcookie("ph_email_jwt", "", time()-3600);
+        ?>
+
+    <div class="phem-container">
+        <div class="phem-card">
+            <img class="phe-login-img" width="250px" src="assets/imgs/page/login/phe-signin-success.svg"
+                alt="phone email login demo">
+            <div class="phem-card-body">
+                <h1>Welcome!</h1>
+                <h4 style="line-height:36px;">You are logged in successfully with <br />
+                    <?php echo $country_code.$phone_no;?></h4>
+
+            </div>
+
+            <button
+                style="display: flex; align-items: center; justify-content:center; padding: 14px 20px; background-color: #02BD7E; font-weight: bold; color: #ffffff; border: none; border-radius: 3px; font-size: inherit;cursor:pointer; max-width:320px; width:100%"
+                onclick="location.href='/demo-login'">Back</button>
+        </div>
+    </div>
+
+    <?php
+    } ?>
 
 </body>
 
