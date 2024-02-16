@@ -114,7 +114,7 @@
 
         if ($response === false) {
             echo "cURL error: " . curl_error($ch);
-            header('Location: /demo-login');
+            header('Location: /');
         } 
 
         curl_close($ch);
@@ -122,7 +122,7 @@
         $json_data = json_decode($response,true);
 
         if($json_data['status'] != 200) {
-            header('Location: /demo-login');
+            header('Location: /');
         }
             
         $country_code = $json_data['country_code'];
@@ -155,7 +155,7 @@
 
             <button
                 style="display: flex; align-items: center; justify-content:center; padding: 14px 20px; background-color: #02BD7E; font-weight: bold; color: #ffffff; border: none; border-radius: 3px; font-size: inherit;cursor:pointer; max-width:320px; width:100%"
-                onclick="location.href='/demo-login'">Back</button>
+                onclick="location.href='/'">Back</button>
         </div>
     </div>
 
