@@ -68,7 +68,7 @@
     <div class="phem-container">
         <div class="phem-card">
 
-            <img class="phe-login-img" width="250px" src="assets/imgs/page/login/phe-signin-box.svg"
+            <img class="phe-login-img" width="250px" src="https://storage.googleapis.com/prod-phoneemail-prof-images/phem-widgets/phe-signin-box.svg"
                 alt="phone email login demo">
             <h1 style="margin:10px; 0">Sign In</h1>
             <p style="color:#a6a6a6;">Welcome to Sign In with Phone  </p>
@@ -144,7 +144,7 @@
 
     <div class="phem-container">
         <div class="phem-card">
-            <img class="phe-login-img" width="250px" src="assets/imgs/page/login/phe-signin-success.svg"
+            <img class="phe-login-img" width="250px" src="https://storage.googleapis.com/prod-phoneemail-prof-images/phem-widgets/phe-signin-success.svg"
                 alt="phone email login demo">
             <div class="phem-card-body">
                 <h1>Welcome!</h1>
