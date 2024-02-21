@@ -19,8 +19,7 @@ To use the Phone.Email Demo App, you need to obtain a `CLIENT_ID` from our admin
 
 1. Visit [Phone.Email Admin Dashboard](https://admin.phone.email).
 2. Log in or create a new account.
-3. Once logged in, navigate to the API settings or a similar section.
-4. Find or create an application to get the `CLIENT_ID`.
+3. After successfully logged in you will get CLIENT ID under profile section in Admin Dashboard.
 
 Keep the `CLIENT_ID` secure and do not share it publicly.
 
