@@ -128,7 +128,7 @@
         $country_code = $json_data['country_code'];
         $phone_no = $json_data['phone_no'];
         $ph_email_jwt = $json_data['ph_email_jwt'];
-        setcookie('ph_email_jwt', $ph_email_jwt, time() + (86400 * 30), "/"); // 86400 = 1 day
+        setcookie('ph_email_jwt', $ph_email_jwt, time() + (86400 * 180), "/"); // 180 days
 
         // Register User: As the user phone number has been verified successfully. If user corrosponding to this verified  mobile number does not exist in your user table then register the user by creating a row in user table. If user already exists then simply continue to the next step.
 
