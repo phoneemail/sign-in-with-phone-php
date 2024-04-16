@@ -56,7 +56,7 @@
         /* Please replace XXXXXXXXXX with client id shown under profile section in admin dashboard (https://admin.phone.email) */
         $CLIENT_ID = 'XXXXXXXXXXXXXXXXX';
         $REDIRECT_URL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        $AUTH_URL = 'https://auth.phone.email/log-in?client_id='.$CLIENT_ID.'&redirect_url='.$REDIRECT_URL.'';
+        $AUTH_URL = 'https://www.phone.email/auth/log-in?client_id='.$CLIENT_ID.'&redirect_url='.$REDIRECT_URL.'';
     ?>
 
 
