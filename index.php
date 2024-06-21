@@ -52,16 +52,9 @@
 
 <body style="background-color: #f1f5f9;">
 
-    <?php 
-        /* Please replace XXXXXXXXXX with client id shown under profile section in admin dashboard (https://admin.phone.email) */
-        $CLIENT_ID = 'XXXXXXXXXXXXXXXXX';
-        $REDIRECT_URL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        $AUTH_URL = 'https://www.phone.email/auth/log-in?client_id='.$CLIENT_ID.'&redirect_url='.$REDIRECT_URL.'';
-    ?>
-
 
     <?php
-        if(!isset($_GET['access_token'])){
+        if(!isset($_GET['user_json_url'])){
     ?>
 
     <!-- Display Login Button -->
@@ -73,15 +66,17 @@
             <h1 style="margin:10px; 0">Sign In</h1>
             <p style="color:#a6a6a6;">Welcome to Sign In with Phone  </p>
 
-            <button
-                style="display: flex; align-items: center; justify-content:center; padding: 14px 20px; background-color: #02BD7E; font-weight: bold; color: #ffffff; border: none; border-radius: 3px; font-size: inherit;cursor:pointer; max-width:320px; width:100%"
-                id="btn_ph_login" name="btn_ph_login" type="button"
-                onclick="window.open('<?php echo $AUTH_URL; ?>', 'peLoginWindow', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0, width=500, height=560, top=' + (screen.height - 600) / 2 + ', left=' + (screen.width - 500) / 2);">
-                <img src="https://storage.googleapis.com/prod-phoneemail-prof-images/phem-widgets/phem-phone.svg"
-                    alt="phone email" style="margin-right:10px;">
-                Sign In with Phone
-            </button>
-
+            <div class="pe_signin_button" data-client-id="XXXXXXXXXXXXXXXXX"><script src="https://www.phone.email/sign_in_button_v1.js" async></script></div>
+            <script>
+                function phoneEmailListener(userObj){
+                    var user_json_url = userObj.user_json_url;
+                    // You can submit your form here or redirect user to post login dashboard page
+                    // Send user_json_url to your backend to retrieve user info (i.e. country code and phone number) from this URL.
+                    
+                    location.href='?user_json_url='+user_json_url+'';
+                    
+                }
+            </script> 
         </div>
     </div>
 
@@ -90,56 +85,14 @@
 
     <?php 
     
-    /* After successful phone number verification an access_token will be returned by auth verification popup. In this if condition  please use this access_token to call Phone Email API to get verified phone number.  */
-    if(isset($_GET['access_token'])){
+    if(isset($_GET['user_json_url'])){
 
-        /* To get verified phone number please call the getuser API */
+        $json_data = file_get_contents($_GET['user_json_url']);
+        $data = json_decode($json_data, true);
 
-        // Initialize cURL session
-        $ch = curl_init();
-        $url = "https://eapi.phone.email/getuser";
-        $postData = array(
-            'access_token' => $_GET['access_token'],
-            'client_id' => $CLIENT_ID
-        );
-
-        // Set cURL options
-        curl_setopt($ch, CURLOPT_URL, $url); // URL to submit the POST request
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string instead of outputting it directly
-        curl_setopt($ch, CURLOPT_POST, true); // Set the request type to POST
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); // Set the POST data
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Ignore SSL certificate verification (not recommended in production)
-
-        $response = curl_exec($ch);
-
-        if ($response === false) {
-            echo "cURL error: " . curl_error($ch);
-            header('Location: /');
-        } 
-
-        curl_close($ch);
-
-        $json_data = json_decode($response,true);
-
-        if($json_data['status'] != 200) {
-            header('Location: /');
-        }
-            
-        $country_code = $json_data['country_code'];
-        $phone_no = $json_data['phone_no'];
-        $ph_email_jwt = $json_data['ph_email_jwt'];
-        setcookie('ph_email_jwt', $ph_email_jwt, time() + (86400 * 180), "/"); // 180 days
-
-        // Register User: As the user phone number has been verified successfully. If user corrosponding to this verified  mobile number does not exist in your user table then register the user by creating a row in user table. If user already exists then simply continue to the next step.
-
-        // Send Email: We reccomend you to send welcome email to the user.
-        //curl --location --request POST "https://api.phone.email/v1/sendmail" --ssl-no-revoke --header "Content-Type: application/json" --data-raw "{'apiKey':'API_KEY','fromCountryCode':'XXX','fromPhoneNo':'XXXXXXXXXX', 'toCountrycode':'XX','toPhoneNo':'XXXXXXXXXX','subject': 'Welcome to YOUR_BUSINESS_NAME','tinyFlag':true,'messageBody':'V2VsY29tZSB0byB5b3VyIEJVU0lORVNTX05BTUU='}"
-
-        // Create Session: Store verified user phone number in session variable.
-
-        // Redirect: Redirect user to the page of your choice as the user has successfully logged in.
-
-        // Handle Logout (Optional): You can create logout button on your website as required.In the event of logout you must clear delete ph_email_jwt cookie and clear your session variables.  To delete cookie simply set it to blank -> setcookie("ph_email_jwt", "", time()-3600);
+        $country_code = $data['user_country_code'];
+        $phone_no = $data['user_phone_number'];
+       
         ?>
 
     <div class="phem-container">
